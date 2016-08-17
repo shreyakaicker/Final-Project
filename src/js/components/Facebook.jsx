@@ -1,8 +1,9 @@
 var React = require('react');
+
 var $ = require("jquery");
 
 var FacebookStats = require('./FacebookStats');
-
+var CustomShapeBarChart = require('./CustomShapeBarChart');
 
 var Facebook = React.createClass({
     
@@ -13,6 +14,7 @@ var Facebook = React.createClass({
             <div>
                 <h1>Facebook</h1>
                 <FacebookStats/>
+                <CustomShapeBarChart/>
             </div>
         );
     }

@@ -1,4 +1,4 @@
-var accessToken = '228096155.1677ed0.03091262d940445497e7c35d1c98ca94';
+var accessToken =  '228096155.1677ed0.03091262d940445497e7c35d1c98ca94';
 var InstagramAPI = require('instagram-api');
 var instagramAPI = new InstagramAPI(accessToken);
 var express = require('express');
@@ -10,8 +10,6 @@ var tone_analyzer = watson.tone_analyzer({
     version: 'v3',
     version_date: '2016-05-19'
 });
-
-
 
 
 
@@ -35,6 +33,7 @@ var tone_analyzer = watson.tone_analyzer({
 // function getUserId(username){
     
 // request('https://api.instagram.com/v1/users/search?q='+username+'&access_token='+accessToken, function (err,res) {
+
     
 //     if (err) {
         
@@ -49,7 +48,7 @@ var tone_analyzer = watson.tone_analyzer({
    
 //   }
 
-// getUserId('vice');
+// getUserId('simdorv');
 
 
 instagramAPI.userSelfMedia().then(function(result) {

@@ -10,7 +10,6 @@ var IndexRoute = ReactRouter.IndexRoute;
 var App = require('./components/App');
 
 var Facebook = require("./components/Facebook.jsx");
-var Instagram = require("./components/Instagram.jsx");
 var Twitter = require("./components/Twitter.jsx");
 
 /*
@@ -27,7 +26,6 @@ var routes = (
 
            
             <Route path="facebook" component={Facebook} />
-             <Route path="instagram" component={Instagram} />
               <Route path="twitter" component={Twitter} />
              </Route>
 
