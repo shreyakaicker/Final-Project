@@ -1,30 +1,8 @@
-// var {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} = require('recharts');
-// var React = require('react');
+var {PropTypes} = require('react');
+var React = require('react');
+var {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} = require('recharts');
 
-// var data = [
-//       {name: 'Anger', val: 0.8},
-//       {name: 'Disgust', val: 0.05},
-//       {name: 'Fear', val: 0.5},
-//       {name: 'Joy', val: 0.87},
-//       {name: 'Sadness', val: 1.0}
-// ];
-// var FacebookStats = React.createClass({
-// 	render: function() {
-//   	return (
-//     	<BarChart width={600} height={300} data={data}
-//             margin={{top: 20, right: 30, left: 20, bottom: 5}}>
-//        <XAxis dataKey="name"/>
-//        <YAxis/>
-//        <CartesianGrid strokeDasharray="3 3"/>
-//        <Tooltip/>
-//        <Legend />
-//        <Bar dataKey="val" fill="#8884d8" />
-//       </BarChart>
-//     );
-//   }
-// })
 
-// module.exports = FacebookStats;
 
 var watsonFacebookData = {
   "document_tone": {
@@ -126,33 +104,43 @@ var socialTone = watsonFacebookData.document_tone.tone_categories[2].tones;
 //   { score: 0.192321, tone_id: 'fear', tone_name: 'Fear' },
 //   { score: 0.30386, tone_id: 'joy', tone_name: 'Joy' },
 //   { score: 0.528891, tone_id: 'sadness', tone_name: 'Sadness' } ]
-
-var {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} = require('recharts');
-var React = require('react');
-var $ = require('jquery');
-
 var data = emotionTone;
-    
-var FacebookStats = React.createClass({
-  componentDidMount: function() {
-    $.getJSON('/facebookStats/' + this.props.params.facebookId)
-      .then(function(response) {
-        
-      })
-  },
-	render: function() {
+console.log(data);
+
+
+var getPath = (x, y, width, height) => {
+  return `M${x},${y + height}
+          C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3} ${x + width / 2}, ${y}
+          C${x + width / 2},${y + height / 3} ${x + 2 * width / 3},${y + height} ${x + width}, ${y + height}
+          Z`;
+};
+
+var TriangleBar = (props) => {
+  const { fill, x, y, width, height } = props;
+
+  return <path d={getPath(x, y, width, height)} stroke="none" fill={fill}/>;
+};
+
+TriangleBar.propTypes = {
+  fill: PropTypes.string,
+  x: PropTypes.number,
+  y: PropTypes.number,
+  width: PropTypes.number,
+  height: PropTypes.number,
+};
+
+var CustomShapeBarChart = React.createClass({
+	render () {
   	return (
     	<BarChart width={600} height={300} data={data}
             margin={{top: 20, right: 30, left: 20, bottom: 5}}>
-      <XAxis dataKey="tone_name"/>
-      <YAxis/>
-      <CartesianGrid strokeDasharray="3 3"/>
-      <Tooltip/>
-      <Legend />
-      <Bar dataKey="score" fill="#8884d8" />
+       <XAxis dataKey="tone_name"/>
+       <YAxis/>
+       <CartesianGrid strokeDasharray="3 3"/>
+       <Bar dataKey="score" fill="#8884d8" shape={<TriangleBar/>} label/>
       </BarChart>
     );
   }
 })
 
-module.exports = FacebookStats;
+module.exports = CustomShapeBarChart;

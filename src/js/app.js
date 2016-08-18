@@ -1,7 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var ReactRouter = require('react-router');
-var Recharts = require ('recharts');
+var Recharts = require('recharts');
 
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
@@ -11,6 +11,9 @@ var App = require('./components/App');
 
 var Facebook = require("./components/Facebook.jsx");
 var Twitter = require("./components/Twitter.jsx");
+
+var FacebookStats = require("./components/FacebookStats");
+var TwitterStats = require("./components/TwitterStats");
 
 /*
 Rendering a router will output the right component tree based on the current URL.
@@ -23,13 +26,13 @@ The <User/> instance will be passed a prop called `params`. It will be an object
 var routes = (
     <Router history={ReactRouter.browserHistory}>
         <Route path="/" component={App}>
-
-           
-            <Route path="facebook" component={Facebook} />
-              <Route path="twitter" component={Twitter} />
-             </Route>
-
-
+            <Route path="facebook" component={Facebook}>
+                <Route path=":facebookId" component={FacebookStats} />
+            </Route>
+            <Route path="twitter" component={Twitter}>
+                <Route path=":twitterId" component={TwitterStats} />
+            </Route>
+        </Route>
     </Router>
 );
 
@@ -39,4 +42,3 @@ var routes = (
 
 
 ReactDOM.render(routes, document.getElementById('app'));
-

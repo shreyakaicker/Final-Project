@@ -1,20 +1,21 @@
 var React = require('react');
-
-var $ = require("jquery");
-
-var FacebookStats = require('./FacebookStats');
-var CustomShapeBarChart = require('./CustomShapeBarChart');
+var browserHistory = require('react-router').browserHistory;
 
 var Facebook = React.createClass({
-    
+    _handleGo: function() {
+        browserHistory.push('/facebook/' + this.refs.fbInput.value);
+    },
     render: function() {
        
       
         return (
             <div>
                 <h1>Facebook</h1>
-                <FacebookStats/>
-                <CustomShapeBarChart/>
+                Enter your facebook ID: <input ref="fbInput" type="text"/>
+                <button onClick={this._handleGo}>GO</button>
+                <div>
+                    {this.props.children}
+                </div>
             </div>
         );
     }

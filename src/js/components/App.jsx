@@ -9,6 +9,10 @@ var App = React.createClass({
                 <header className="main-header">
                     <h1><Link to="/">Project</Link></h1>
                 </header>
+                <Link to="/facebook">FACEBOOK</Link>
+                <p> </p>
+                <Link to="/twitter">TWITTER</Link>
+                
                 <main className="main-content">
                     {this.props.children}
                 </main>
@@ -18,3 +22,4 @@ var App = React.createClass({
 });
 
 module.exports = App;
+

@@ -13,6 +13,7 @@
     "dev": "webpack --watch"
   },
   "dependencies": {
+    "ejs": "^2.5.1",
     "express": "^4.14.0",
     "fb": "^1.1.1",
     "fb-id": "0.0.1",
