@@ -17,7 +17,16 @@ app.get('/facebookStats/:facebookName', function(req, res) {
       .then(function(stats) {
         console.log("Received stats");
         res.send(stats);
-      });
+      })
+      .catch(function(err) {
+        console.log('wtf');
+        console.log(err);
+        res.status(500).send(err.stack);
+      })
+});
+
+app.get('/*', function(req, res) {
+  res.sendFile(__dirname + '/src/index.html');
 });
 
 app.listen(process.env.PORT || 8080, function() {

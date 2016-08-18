@@ -1,11 +1,11 @@
 var Facebook = require('fb-id');
 var FB = require('fb');
 var Twitter = require('twitter');
+var ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
     
 var facebook = new Facebook();
 
 FB.setAccessToken('EAAQbyD3MbJEBAEfy7RzMEnBqIU10FDk9hEzY6ZAvl4DPIBfZBXcpyPEPws45lxyF3KCFsFeYudUs1wErLohourjgaZBrheu58rz6zjJZAt3ABYRrMdQraMsjXokPDWOzMp4oxfWHFslOLgl2FzirYmhD2bPF4lIZD');
-var watson = require('./node_modules/watson-developer-cloud');
 var AlchemyLanguageV1 = require('watson-developer-cloud/alchemy-language/v1');
 
 var client = new Twitter({
@@ -18,11 +18,11 @@ var client = new Twitter({
 var alchemy_language = new AlchemyLanguageV1({
   api_key: '8eaa3d8e5a39f7886118f7c0234d89f0db5265e8'
 });
-var tone_analyzer = watson.tone_analyzer({
-  username: '72d24057-eb60-493d-8a8d-4e55a214e052',
-  password: '7SJR251LLFcv',
-  version: 'v3',
-  version_date: '2016-05-19'
+var tone_analyzer = new ToneAnalyzerV3({
+    "url": "https://gateway.watsonplatform.net/tone-analyzer/api",
+   "password": "DVYZeL3OtiHF",
+   "username": "4b0bc194-a148-434a-83c6-22f240fc6781",
+    version_date: "2016-02-11"
 });
 
 
@@ -64,7 +64,7 @@ function getIdFromFacebookName (facebookName) {
 
 
 function getAllPostsForId(fbId, callback) {
-    return fbApi(fbId + '/posts?limit=10').then(
+    return fbApi(fbId + '/posts?limit=100').then(
         function(res) {
 
             var data = res.data;
@@ -111,6 +111,7 @@ function textAnalyzer(commentsText) {
     return Promise.reject(new Error('commentsText required'));
   }
   
+  console.log(commentsText);
   var entities = new Promise(function(resolve, reject) {
     alchemy_language.entities({text: commentsText}, function (err, response) {
       if (err) {
@@ -150,21 +151,21 @@ function textAnalyzer(commentsText) {
     });
   });
   
-  var tones = new Promise(function(resolve, reject) {
-    tone_analyzer.tone({ text: commentsText },
-      function(err, response) {
-        if (err) {
-          console.log(err.stack);
-          reject(err);
-        }
-        else {
-          console.log('received tones');
-          resolve({type: 'tones', value: response.document_tone});
-        }
-    });
-  });
+  // var tones = new Promise(function(resolve, reject) {
+  //   tone_analyzer.tone({ text: commentsText },
+  //     function(err, response) {
+  //       if (err) {
+  //         console.log(err.stack);
+  //         reject(err);
+  //       }
+  //       else {
+  //         console.log('received tones');
+  //         resolve({type: 'tones', value: response.document_tone});
+  //       }
+  //   });
+  // });
   
-  return Promise.all([entities, sentiment, keywords, tones]).then(
+  return Promise.all([entities, sentiment, keywords/*, tones*/]).then(
     function(responses) {
       var responsesObj = responses.reduce(function(acc, item) {
         acc[item.type] = item.value;

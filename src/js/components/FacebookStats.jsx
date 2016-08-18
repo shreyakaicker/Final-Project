@@ -129,30 +129,58 @@ var socialTone = watsonFacebookData.document_tone.tone_categories[2].tones;
 
 var {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} = require('recharts');
 var React = require('react');
-var $ = require('jquery');
+var $ = window.$ = require('jquery');
 
 var data = emotionTone;
     
 var FacebookStats = React.createClass({
+  getInitialState: function() {
+    return {};
+  },
   componentDidMount: function() {
+    var that = this;
     $.getJSON('/facebookStats/' + this.props.params.facebookId)
       .then(function(response) {
-        
+        that.setState({stats: response});
+      })
+      .catch(function(err) {
+        console.log(err);
       })
   },
 	render: function() {
+	  
+	  var stats = this.state.stats;
+	  
   	return (
-    	<BarChart width={600} height={300} data={data}
+  	  this.state.stats ?
+    	<div>
+    	  <h2>Keywords</h2>
+    	  <BarChart width={600} height={300} data={this.state.stats.keywords}
             margin={{top: 20, right: 30, left: 20, bottom: 5}}>
-      <XAxis dataKey="tone_name"/>
-      <YAxis/>
-      <CartesianGrid strokeDasharray="3 3"/>
-      <Tooltip/>
-      <Legend />
-      <Bar dataKey="score" fill="#8884d8" />
-      </BarChart>
+          <XAxis dataKey="text"/>
+          <YAxis/>
+          <CartesianGrid strokeDasharray="3 3"/>
+          <Tooltip/>
+          <Legend />
+          <Bar dataKey="relevance" fill="#8884d8" />
+        </BarChart>
+    	</div>
+      :
+      <div>loading data</div>
     );
   }
 })
+
+// var barchart = (
+//   <BarChart width={600} height={300} data={[]}
+//             margin={{top: 20, right: 30, left: 20, bottom: 5}}>
+//       <XAxis dataKey="tone_name"/>
+//       <YAxis/>
+//       <CartesianGrid strokeDasharray="3 3"/>
+//       <Tooltip/>
+//       <Legend />
+//       <Bar dataKey="score" fill="#8884d8" />
+//       </BarChart>
+// )
 
 module.exports = FacebookStats;
