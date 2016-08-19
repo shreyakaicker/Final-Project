@@ -9,8 +9,8 @@ var IndexRoute = ReactRouter.IndexRoute;
 
 var App = require('./components/App');
 
-var Facebook = require("./components/Facebook.jsx");
-var Twitter = require("./components/Twitter.jsx");
+var Facebook = require("./components/Facebook");
+var Twitter = require("./components/Twitter");
 
 var FacebookStats = require("./components/FacebookStats");
 var TwitterStats = require("./components/TwitterStats");
@@ -30,7 +30,7 @@ var routes = (
                 <Route path=":facebookId" component={FacebookStats} />
             </Route>
             <Route path="twitter" component={Twitter}>
-                <Route path=":twitterId" component={TwitterStats} />
+                <Route path=":twitterName" component={TwitterStats} />
             </Route>
         </Route>
     </Router>

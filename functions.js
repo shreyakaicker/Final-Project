@@ -26,16 +26,6 @@ var tone_analyzer = new ToneAnalyzerV3({
 });
 
 
-function getTwitter(name) {
-client.get('/search/tweets.json?q=%40@'+name+'&count=2/', function(error, tweets, response, callback) {
-  var tweetArray= tweets.statuses;
-  var tweetList = tweetArray.map(function (tweets) {
-    return tweets.text;
-  });
-  return tweetList;
-});
-}
-
 
 function fbApi(param) {
     return new Promise(function(resolve, reject) {
@@ -50,6 +40,29 @@ function fbApi(param) {
     });
 }
 
+ function getTwitterClient(param) {
+ 
+   return new Promise(function(resolve, reject) {
+     client.get('/search/tweets.json?q=%40@' + param + '&count=10/', function(error, tweets, response) {
+       if (!response || error) {
+         reject(error || new Error('Something bad happened!'));
+       }
+       else {
+         var tweetArray = tweets.statuses;
+         var tweetList = tweetArray.map(function(tweets) {
+           return tweets.text;
+         }).join('.');
+         resolve(tweetList);
+       }
+ 
+     });
+   });
+ }
+ 
+getTwitterClient('vice').then(function(text){
+  
+  console.log(text);
+} );
 
 function getIdFromFacebookName (facebookName) {
     return new Promise(function(resolve, reject) {
@@ -64,7 +77,7 @@ function getIdFromFacebookName (facebookName) {
 
 
 function getAllPostsForId(fbId, callback) {
-    return fbApi(fbId + '/posts?limit=100').then(
+    return fbApi(fbId + '/posts?limit=5').then(
         function(res) {
 
             var data = res.data;
@@ -76,7 +89,7 @@ function getAllPostsForId(fbId, callback) {
 
 function getAllComments(postId) {
     
-    return fbApi(postId + '/comments?limit=100')
+    return fbApi(postId + '/comments?limit=5')
         .then(function(comments) {
             return comments.data
                     .map(comment => comment.message) // this is an arrow function
@@ -84,6 +97,32 @@ function getAllComments(postId) {
         });
 }
 
+// function getTwitter(name) {
+// client.get('/search/tweets.json?q=%40@'+name+'&count=2/', function(error, tweets, response, callback {
+//   var tweetArray= tweets.statuses;
+//   var tweetList = tweetArray.map(function (tweets) {
+//     return tweets.text;
+//   });
+//   return tweetList.join('.');
+// });
+// }
+
+
+// function getTwitter(name) {
+// return client.get('/search/tweets.json?q=%40@'+name+'&count=2/').then(function (err, tweets, res) {
+//   var tweetArray= tweets.statuses;
+//   return tweetArray;
+  
+// }).then(function(array){
+//     var tweetList = array.map(function (tweets) {
+//     return tweets.text;
+    
+//   } ) 
+
+ 
+//   return tweetList.join('.');
+// });
+// }
 
 
 function getComments(facebookName) {
@@ -184,5 +223,8 @@ module.exports = {
     getAllPostsForId: getAllPostsForId,
     getComments: getComments,
     getAllComments: getAllComments,
-    textAnalyzer: textAnalyzer
+    textAnalyzer: textAnalyzer,
+    getTwitterClient: getTwitterClient
 };
+
+

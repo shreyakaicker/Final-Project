@@ -25,6 +25,28 @@ app.get('/facebookStats/:facebookName', function(req, res) {
       })
 });
 
+
+app.get('/twitterStats/:twitterName', function(req, res) {
+    var twitterName = req.params.twitterName;
+    console.log(twitterName);
+    functions
+      .getTwitterClient(twitterName)
+      .then(function(commentsText) {
+        console.log("Received comments");
+        return functions.textAnalyzer(commentsText);
+      })
+      .then(function(stats) {
+        console.log("Received stats");
+        console.log(stats)
+        res.send(stats);
+      })
+      .catch(function(err) {
+        console.log('wtf');
+        console.log(err);
+        res.status(500).send(err.stack);
+      })
+});
+
 app.get('/*', function(req, res) {
   res.sendFile(__dirname + '/src/index.html');
 });
