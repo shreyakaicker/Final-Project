@@ -9,12 +9,13 @@ var IndexRoute = ReactRouter.IndexRoute;
 
 var App = require('./components/App');
 
-var Facebook = require("./components/Facebook");
-var Twitter = require("./components/Twitter");
 
-var FacebookStats = require("./components/FacebookStats");
-var TwitterStats = require("./components/TwitterStats");
-
+var FacebookStats = require('./components/FacebookStats');
+var TwitterStats = require('./components/TwitterStats');
+var InstagramStats = require("./components/InstagramStats");
+var StatsParent = require('./components/StatsParent');
+var FacebookStats = require('./components/FacebookStats');
+var TwitterStats = require('./components/TwitterStats')
 /*
 Rendering a router will output the right component tree based on the current URL.
 Nested routes' components will be passed down to the parent as `this.props.children`
@@ -25,14 +26,14 @@ The <User/> instance will be passed a prop called `params`. It will be an object
 */
 var routes = (
     <Router history={ReactRouter.browserHistory}>
-        <Route path="/" component={App}>
-            <Route path="facebook" component={Facebook}>
-                <Route path=":facebookId" component={FacebookStats} />
+        <Route path="/">
+            <IndexRoute component={App}/>
+            <Route component={StatsParent}>
+                <Route path="facebook/:facebookId" component={FacebookStats} />
+                <Route path="twitter/:twitterName" component={TwitterStats} />
+                <Route path="instagram/:instagramName" component={InstagramStats} />
             </Route>
-            <Route path="twitter" component={Twitter}>
-                <Route path=":twitterName" component={TwitterStats} />
-            </Route>
-        </Route>
+     </Route>
     </Router>
 );
 
